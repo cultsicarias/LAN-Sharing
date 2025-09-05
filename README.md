@@ -74,15 +74,15 @@ node server.js
 
 You're Live! Your terminal will display a confirmation message with the server address and a QR code. Keep this terminal window open.
 
--------------------------------------------
-🚀 Flash Transfer Server v2 is RUNNING!
-💻 On this PC, open your browser to: http://localhost:3000
-📱 On other devices (Phone, Laptop), connect to: [http://192.168.1.10:3000](http://192.168.1.10:3000)
--------------------------------------------
+🚀 Flash Transfer Server v2 is RUNNING! <br>
+💻 On this PC, open your browser to: http://localhost:3000 <br>
+📱 On other devices (Phone, Laptop), connect to: [http://192.168.1.10:3000](http://192.168.1.10:3000) <br>
+
 Or scan this QR code with your phone's camera:
 <QR code appears here>
-
+-------------
 How to Use
+-------------
 Connect Your Device: On your mobile phone or another computer, either scan the QR code with your camera or open a web browser and type in the server's local IP address (e.g., http://192.168.1.10:3000).
 
 Send Files: Drag and drop a file into the upload area or click to select one. Choose "Permanent" or "Broadcast" mode and click "Upload File".
