@@ -32,7 +32,7 @@
         </header>
 
         <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Left Column: Upload -->
+           
             <div id="upload-container" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Send a File</h2>
                 <form id="uploadForm" class="space-y-4">
@@ -44,7 +44,7 @@
                         <input id="fileInput" type="file" class="hidden">
                     </div>
 
-                    <!-- NEW: Upload Mode Switch -->
+                   
                     <div class="flex items-center justify-center pt-2">
                         <div class="switch-field">
                             <input type="radio" id="upload-mode-permanent" name="upload-mode" value="permanent" checked/>
@@ -61,7 +61,7 @@
                 <div id="upload-progress-container" class="w-full mt-4 hidden">
                     <div class="flex justify-between mb-1">
                         <span class="text-base font-medium text-blue-700 dark:text-white">Uploading...</span>
-                        <!-- NEW: Transfer Speed Display -->
+                        
                         <span id="transfer-speed" class="text-sm font-medium text-blue-700 dark:text-white">0 Mbps</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
@@ -71,9 +71,9 @@
                 <div id="status" class="mt-4 text-center text-sm font-medium"></div>
             </div>
 
-            <!-- Right Column: Downloads -->
+        
             <div class="space-y-8">
-                <!-- NEW: Broadcast Files Section -->
+                
                 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
                     <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Broadcast Files</h2>
                     <div id="broadcastFileList" class="space-y-2 max-h-48 overflow-y-auto pr-2">
@@ -81,7 +81,7 @@
                     </div>
                 </div>
 
-                <!-- Permanent Files Section -->
+              
                 <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
                     <h2 class="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Permanent Files</h2>
                     <div id="fileList" class="space-y-2 max-h-48 overflow-y-auto pr-2">
@@ -93,16 +93,16 @@
     </div>
 
     <script>
-        // --- Element Selection ---
+       
         const uploadForm = document.getElementById('uploadForm');
         const fileInput = document.getElementById('fileInput');
         const statusDiv = document.getElementById('status');
         const dropZone = document.getElementById('drop-zone');
-        // Progress and Speed
+        
         const progressContainer = document.getElementById('upload-progress-container');
         const progressBar = document.getElementById('upload-progress-bar');
         const transferSpeedSpan = document.getElementById('transfer-speed');
-        // File Lists
+        
         const fileListDiv = document.getElementById('fileList');
         const noFilesMessage = document.getElementById('no-files-message');
         const broadcastFileListDiv = document.getElementById('broadcastFileList');
@@ -110,7 +110,7 @@
         
         let fileToUpload = null;
 
-        // --- Drag and Drop Logic ---
+   
         dropZone.addEventListener('click', () => fileInput.click());
         dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
         dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
@@ -134,7 +134,7 @@
             dropZone.querySelector('p').innerHTML = `<span class="font-semibold text-blue-600">${filename}</span> selected.`;
         }
 
-        // --- Form Submission (Now uses XMLHttpRequest for Progress) ---
+        
         uploadForm.addEventListener('submit', (e) => {
             e.preventDefault();
             if (!fileToUpload) {
@@ -145,14 +145,14 @@
             const formData = new FormData();
             formData.append('file', fileToUpload);
 
-            // Determine upload mode (permanent or broadcast)
+        
             const uploadMode = document.querySelector('input[name="upload-mode"]:checked').value;
             const endpoint = uploadMode === 'broadcast' ? '/upload-broadcast' : '/upload';
             const fullUrl = `${window.location.origin}${endpoint}`;
 
             const xhr = new XMLHttpRequest();
 
-            // --- Real-time Progress and Speed Calculation ---
+           
             let lastLoaded = 0;
             let lastTime = Date.now();
             xhr.upload.addEventListener('progress', (event) => {
@@ -161,12 +161,12 @@
                     progressBar.style.width = percentComplete + '%';
 
                     const currentTime = Date.now();
-                    const timeDiff = (currentTime - lastTime) / 1000; // in seconds
+                    const timeDiff = (currentTime - lastTime) / 1000; 
                     const bytesDiff = event.loaded - lastLoaded;
 
-                    if (timeDiff > 0.5) { // Update speed every 0.5s
-                        const speedBps = bytesDiff / timeDiff; // Bytes per second
-                        const speedMbps = (speedBps * 8) / (1024 * 1024); // Megabits per second
+                    if (timeDiff > 0.5) { 
+                        const speedBps = bytesDiff / timeDiff; 
+                        const speedMbps = (speedBps * 8) / (1024 * 1024); 
                         transferSpeedSpan.textContent = `${speedMbps.toFixed(2)} Mbps`;
                         lastLoaded = event.loaded;
                         lastTime = currentTime;
@@ -177,7 +177,7 @@
             xhr.addEventListener('load', () => {
                 if (xhr.status === 200) {
                     showStatus(`File ${uploadMode === 'broadcast' ? 'broadcasted' : 'uploaded'} successfully!`, 'success');
-                    fetchAllFiles(); // Refresh both file lists
+                    fetchAllFiles(); 
                     resetUploadForm();
                 } else {
                     showStatus(`Upload failed: ${xhr.responseText}`, 'error');
@@ -202,7 +202,7 @@
 
         function resetUploadForm() {
             fileToUpload = null;
-            uploadForm.reset(); // Resets file input and radio buttons
+            uploadForm.reset(); 
             updateDropZoneText('Click to upload');
         }
         
@@ -214,7 +214,7 @@
             }, 2000);
         }
 
-        // --- File Fetching and Display Logic ---
+        
         function createFileElement(file, type) {
             const fileElement = document.createElement('a');
             const fileUrl = `${window.location.origin}/${type}/${encodeURIComponent(file)}`;
@@ -259,10 +259,10 @@
             fetchAndDisplayFiles('/files-broadcast', broadcastFileListDiv, noBroadcastFilesMessage, 'broadcast');
         }
 
-        // --- Utility ---
+       
         function showStatus(message, type) {
             statusDiv.textContent = message;
-            statusDiv.className = 'mt-4 text-center text-sm font-medium'; // Reset classes
+            statusDiv.className = 'mt-4 text-center text-sm font-medium'; 
             const colorClasses = {
                 success: 'text-green-600 dark:text-green-400',
                 error: 'text-red-600 dark:text-red-400',
@@ -272,9 +272,10 @@
             statusDiv.classList.add(...classesToAdd);
         }
 
-        // --- Initial Load ---
+        
         document.addEventListener('DOMContentLoaded', fetchAllFiles);
     </script>
 </body>
 </html>
+
 
